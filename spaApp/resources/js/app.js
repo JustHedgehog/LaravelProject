@@ -7,6 +7,7 @@
 import Vue from 'vue';
 import Spa from './Spa.vue';
 import router from './router';
+import {Auth} from './api/Auth';
 window.Vue = require('vue');
 
 require('./bootstrap');
@@ -34,10 +35,19 @@ require('./bootstrap');
 
 const app = new Vue({
     el: '#app',
-    template:'<spa/>',
+    template: '<spa/>',
     components: {
         Spa
     },
-    router
+    router,
+    data: {
+        eventBus: new Vue(),
+    },
+    provide() {
+        return {
+            eventBus: this.eventBus,
+            auth: new Auth(this.eventBus, router),
+        }
+    }
 });
 

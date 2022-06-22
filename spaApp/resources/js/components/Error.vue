@@ -12,12 +12,13 @@
 </template>
 <script>
 export default {
-    created() { this.$root.$on("error", this.handleError); },
-    beforeDestroy() { this.$root.$off("error"); },
+    inject: ["eventBus"],
+    created() { this.eventBus.$on("error", this.handleError); },
+    beforeDestroy() { this.eventBus.$off("error"); },
     data() {
         return {
             isError: false,
-            message: ''
+            message: ""
         };
     },
     methods: {
@@ -27,28 +28,37 @@ export default {
             if (err.response) {
                 this.message = `${err.response.statusText} - ${err.response.status}`;
             } else {
-                this.message = "HTTP Error!";
+                this.message = "HTTP Error happend!";
             }
             console.log(err);
         }
     },
     watch: {
-        $route(to, from) {
-            this.hide();
-        }
+        $route(to, from) { this.hide(); }
     }
 };
-
 </script>
 <style scoped>
 .modal {
     display: flex;
-    width: 50%;
-    height: 600px;
     position: fixed;
-    margin: auto;
-    align-self: center;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {}
+.modal-content {
+    background-color: #fefefe;
+    align-items: center;
+    margin: 20% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    height: 20%;
+}
 </style>

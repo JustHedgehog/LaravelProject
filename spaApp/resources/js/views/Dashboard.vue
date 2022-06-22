@@ -6,6 +6,7 @@
 </template>
 <script>
 export default {
+    inject: ["auth"],
     data() {
         return {
             user: null
@@ -16,10 +17,8 @@ export default {
     },
     methods: {
         async getUser() {
-            try {
-                let user = await axios.get("/api/user");
-                this.user = user.data.name;
-            } catch (err) { console.log(err); }
+            let user = await this.auth.getAuthUser();
+            this.user = user.data.name;
         }
     }
 };
